@@ -61,7 +61,7 @@ body {
 }
 
 #logo {
-    width: 15%;
+    width: 100%;
     border-radius: 30px;
 }
 
