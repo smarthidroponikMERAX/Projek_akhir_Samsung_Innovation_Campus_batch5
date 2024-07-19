@@ -150,6 +150,7 @@ body {
     border-radius: 20px;
     border-top: 4px solid RGB(169, 169, 169);
     border-bottom: 4px solid RGB(169, 169, 169);
+    margin-bottom:3em;
     margin-left: 0em;
     margin-right: 14em;
     padding: 15px;
