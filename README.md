@@ -1,1 +1,1 @@
-# Projek_akhir_Samsung_Innovation_Campus_batch5
+PROJEK FINAL SMART HIDROPONIK SIC BATCH 5 _____ MERA X
