@@ -57,7 +57,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover; 
     text-align: center;
-    height: 300px;
+    height: 10em;
 }
 
 #logo {
