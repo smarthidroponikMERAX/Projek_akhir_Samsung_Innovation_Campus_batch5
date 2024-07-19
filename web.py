@@ -32,227 +32,214 @@ def streamlit_app():
     # Konten CSS dari tes2.css
     desain_css = """
     <style>
-   body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
+<style>
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
 }
-#Tampilan{
-  position:relative;
-  width: 100%;
-  margin: 10px auto;
-  border-radius: 10px;
 
+#Tampilan {
+    position: relative;
+    width: 100%;
+    margin: 10px auto;
+    border-radius: 10px;
 }
-.bagian-header{
-  background-image: url("https://raw.githubusercontent.com/Yeahthu/tes-streamlit/main/bgHidroponik.jpg");
-  border-radius: 10px 10px 0 0;
-  border-bottom: 2px solid #eb0e0e;
-  margin : 0;
-  padding:20px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; 
-  background-position: center;
-  text-align:center;
-  height: 300px;
+
+.bagian-header {
+    background-image: url("https://raw.githubusercontent.com/Yeahthu/tes-streamlit/main/bgHidroponik.jpg");
+    border-radius: 10px 10px 0 0;
+    border-bottom: 2px solid #eb0e0e;
+    margin: 0;
+    padding: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    text-align: center;
+    height: 300px;
 }
-#logo{
-  width:15%;
-  border-radius: 30px;
+
+#logo {
+    width: 15%;
+    border-radius: 30px;
 }
-.bagian-utama{
-  margin:8px;
-  padding:10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap:20px;
-    flex-direction: row;
+
+.bagian-utama {
+    margin: 8px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
 }
+
 .bagian-utama > * {
-  flex: 1;
-  text-align: center;
+    flex: 1;
+    text-align: center;
 }
-.judul-overview{
-  font-size: 24px;
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  margin: 20px;
-  color: red;
+
+.judul-overview {
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin: 20px;
+    color: red;
 }
-.sensor h2{
-    margin:0px;
+
+.sensor h2 {
+    margin: 0px;
     font-size: 24px;
     font-weight: bold;
     color: red;
     text-align: center;
 }
-sensor{
+
+.sensor {
     padding: 0px;
     margin: 1px;
 }
-#icon_pH, #icon_suhu, #icon_nutrisi{
-  width: 25%;
-}
-.bagian_ph, .bagian_suhu, .bagian_nutrisi{
-  font-size: 24px;
-  font-weight: bold;
-  margin: 10px;
-}
-.unit{
-  font-size: 12px;
-  color:#eb0e0e;
-  vertical-align: middle;
-}
-.value{
-  color: rgb(0, 255, 30);
-}
-.bagian-akhir{
-  margin: 20px;
-  padding: 15px;
-  height: 20%;
 
+#icon_pH, #icon_suhu, #icon_nutrisi {
+    width: 25%;
 }
-.status-hidroponik{
-  font-size: 24px;
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  margin: 20px;
-  margin-top: 200px;
-  color: #2E8B57;
+
+.bagian_ph, .bagian_suhu, .bagian_nutrisi {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
 }
-.batas-text{
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
-  text-align: center;
-  margin: 0px;
-  color: orange;
+
+.unit {
+    font-size: 12px;
+    color: #eb0e0e;
+    vertical-align: middle;
 }
-.ukuran{
-  width: 100%;
-  border-radius: 20px;
-  border-top:4px solid RGB(169, 169, 169);
-  border-bottom: 4px solid RGB(169, 169, 169);
-  margin: 20px;
-  padding: 15px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+.value {
+    color: rgb(0, 255, 30);
 }
-.slide-ph{
-  -webkit-appearance: none; 
-  width: 100%;  
-  margin: 30px 0; 
-  }
-.slide-ph:focus {
-  outline: none; 
+
+.bagian-akhir {
+    margin: 20px;
+    padding: 15px;
+    height: 20%;
 }
+
+.status-hidroponik {
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin: 20px;
+    margin-top: 200px;
+    color: #2E8B57;
+}
+
+.batas-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    text-align: center;
+    margin: 0px;
+    color: orange;
+}
+
+.ukuran {
+    width: 100%;
+    border-radius: 20px;
+    border-top: 4px solid RGB(169, 169, 169);
+    border-bottom: 4px solid RGB(169, 169, 169);
+    margin: 20px;
+    padding: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.slide-ph, .slide-suhu, .slide-nutrisi {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.slide-ph:focus, .slide-suhu:focus, .slide-nutrisi:focus {
+    outline: none;
+}
+
+.slide-ph::-webkit-slider-runnable-track, .slide-suhu::-webkit-slider-runnable-track, .slide-nutrisi::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 0.2px solid #010101;
+}
+
 .slide-ph::-webkit-slider-runnable-track {
-  width: 100%; 
-height: 8.4px; 
-  cursor: pointer; 
-  border-radius: 10px; 
-  border: 0.2px solid #010101;
-  background: linear-gradient(to right, 
+    background: linear-gradient(to right, 
                 red 0%, rgb(255, 149, 0) 20%, 
                 rgb(36, 249, 3) 30%, rgb(2, 82, 2) 50%, 
-                rgb(45, 1, 76) 80%, purple 100%); 
+                rgb(45, 1, 76) 80%, purple 100%);
 }
-.slide-ph::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 23px; 
-  width: 23px; 
-  border-radius: 50%; 
-  background-color: transparent;
-  background-image: url("https://github.com/Yeahthu/tes-streamlit/blob/main/kursor_fixx.png?raw=true"); 
-  background-size: cover;
-  cursor: pointer;
-  box-shadow: 0 0 2px rgba(0,0,0,0.3); 
-  margin-top:-21px;
 
-} 
-.slide-suhu{
-  -webkit-appearance: none; 
-  width: 100%;  
-  margin: 30px 0; 
-  }
-.slide-suhu:focus {
-  outline: none; 
-}
 .slide-suhu::-webkit-slider-runnable-track {
-  width: 100%; 
-height: 8.4px; 
-  cursor: pointer; 
-  border-radius: 10px; 
-  border: 0.2px solid #010101;
-  background: linear-gradient(to right, 
-                rgb(0, 42, 255)0%,rgb(52, 63, 217) 20%, 
-                rgb(145, 184, 219) 30%,rgb(0, 246, 45)50%,
+    background: linear-gradient(to right, 
+                rgb(0, 42, 255) 0%, rgb(52, 63, 217) 20%, 
+                rgb(145, 184, 219) 30%, rgb(0, 246, 45) 50%, 
                 rgb(255, 149, 0) 80%, red 100%);
- 
 }
-.slide-suhu::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 23px; 
-  width: 23px; 
-  border-radius: 50%; 
-  background-color: transparent;
-  background-image: url("https://github.com/Yeahthu/tes-streamlit/blob/main/kursor_fixx.png?raw=true"); 
-  background-size: cover;
-  cursor: pointer; 
-  box-shadow: 0 0 2px rgba(0,0,0,0.3); 
-  margin-top:-21px;
 
-} 
-.slide-nutrisi{
-  -webkit-appearance: none; 
-  width: 100%;  
-  margin: 30px 0; 
-  }
-.slide-nutrisi:focus {
-  outline: none; 
-}
 .slide-nutrisi::-webkit-slider-runnable-track {
-  width: 100%; 
-height: 8.4px; 
-  cursor: pointer; 
-  border-radius: 10px; 
-  border: 0.2px solid #010101;
-  background: linear-gradient(to right, 
-                blue 0%,green 50% , red 100% ); 
- 
+    background: linear-gradient(to right, 
+                blue 0%, green 50%, red 100%);
 }
-.slide-nutrisi::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 23px; 
-  width: 23px; 
-  border-radius: 50%; 
-  background-color: transparent;
-  background-image: url("https://github.com/Yeahthu/tes-streamlit/blob/main/kursor_fixx.png?raw=true"); 
-  background-size: cover;
-  cursor: pointer; 
-  box-shadow: 0 0 2px rgba(0,0,0,0.3); 
-  margin-top:-21px;
 
-} 
-.label {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px;
-  padding: 10px;
-  font-size: 14px;
+.slide-ph::-webkit-slider-thumb, .slide-suhu::-webkit-slider-thumb, .slide-nutrisi::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 23px;
+    width: 23px;
+    border-radius: 50%;
+    background-color: transparent;
+    background-image: url("https://github.com/Yeahthu/tes-streamlit/blob/main/kursor_fixx.png?raw=true");
+    background-size: cover;
+    cursor: pointer;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    margin-top: -21px;
 }
-.info {
-  width: 33.33%;
-  text-align: center;
-#demo{
+
+.label {
+    display: flex;
+    justify-content: space-between;
     margin: 10px;
     padding: 10px;
+    font-size: 14px;
 }
+
+.info {
+    width: 33.33%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .bagian-header {
+        height: 200px;
+    }
+    .judul-overview {
+        font-size: 18px;
+    }
+    .sensor h2 {
+        font-size: 20px;
+    }
+    .bagian_ph, .bagian_suhu, .bagian_nutrisi {
+        font-size: 18px;
+    }
+    .status-hidroponik {
+        font-size: 18px;
+    }
+    .batas-text {
+        font-size: 16px;
+    }
 }
 </style>
+
     """
     sensor_data = get_latest_sensor_data()
     if sensor_data is not None:
