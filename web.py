@@ -150,8 +150,8 @@ body {
     border-radius: 20px;
     border-top: 4px solid RGB(169, 169, 169);
     border-bottom: 4px solid RGB(169, 169, 169);
-    margin: 3em;
-
+    margin: 1em;
+    margin-left: 2em;
     padding: 15px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
