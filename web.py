@@ -122,7 +122,7 @@ body {
 }
 
 .bagian-akhir {
-    margin: 20px;
+    margin: 50em;
     padding: 15px;
     height: 20%;
 }
