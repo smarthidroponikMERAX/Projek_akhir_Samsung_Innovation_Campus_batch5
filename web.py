@@ -74,10 +74,12 @@ body {
     gap: 20px;
 }
 
-.bagian-utama > * {
-    flex: 1;
+.bagian-utama > .sensor {
+    flex: 1 1 30%; /* Atur lebar sensor dengan proporsi */
     text-align: center;
+    box-sizing: border-box;
 }
+
 
 .judul-overview {
     font-size: 24px;
