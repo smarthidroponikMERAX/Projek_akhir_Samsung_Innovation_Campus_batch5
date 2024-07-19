@@ -1,0 +1,7 @@
+pandas
+pymongo
+scikit-learn
+seaborn
+matplotlib
+streamlit
+imbalanced-learn
