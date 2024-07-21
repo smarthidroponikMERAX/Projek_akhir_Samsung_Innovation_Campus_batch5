@@ -527,6 +527,17 @@ def ml():
       st.write(f"Recall Random Forest: {recall_RF_nutrisi}")
       st.write(f"F1-score Random Forest: {f1_RF_nutrisi}")
 
+    st.subheader("Grafik Sensor")
+    
+    st.write("pH Sensor:")
+    st.line_chart(data_rapi.set_index('waktu')['pH'])
+
+    st.write("Suhu Air:")
+    st.line_chart(data_rapi.set_index('waktu')['suhu'])
+
+    st.write("Nutrisi (TDS):")
+    st.line_chart(data_rapi.set_index('waktu')['tds'])
+
 
 if __name__ == "__main__":
         streamlit_app()
