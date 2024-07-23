@@ -25,7 +25,7 @@ def get_latest_sensor_data():
 
 # Fungsi utama Streamlit
 def streamlit_app():
-    st.set_page_config(page_title='Smart Hidroponik', layout='wide', page_icon="🌿")
+    st.set_page_config(page_title='Smart Hidroponik', page_icon="🌿")
     
     
 
