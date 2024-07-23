@@ -12,6 +12,18 @@ from io import StringIO
 from imblearn.over_sampling import SMOTE
 
 
+[server]
+headless = true
+
+[theme]
+base = "light"
+
+[browser]
+gatherUsageStats = false
+
+[layout]
+wide = false
+
 
 # Fungsi untuk mengambil nilai sensor terbaru dari MongoDB
 def get_latest_sensor_data():
