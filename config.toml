@@ -1,0 +1,11 @@
+[server]
+headless = true
+
+[theme]
+base = "light"
+
+[browser]
+gatherUsageStats = false
+
+[layout]
+wide = false
