@@ -353,7 +353,7 @@ body {
     st.markdown(desain_css, unsafe_allow_html=True)
     st.markdown(html_content, unsafe_allow_html=True)
 
-    def ml():
+def ml():
       client = MongoClient('mongodb+srv://SmartHidroponik:MERA_X@smarthidroponik.hdetbis.mongodb.net/?retryWrites=true&w=majority&appName=SmartHidroponik')
       db = client['Smart_Hidroponik']
       collection = db['Sensor']
