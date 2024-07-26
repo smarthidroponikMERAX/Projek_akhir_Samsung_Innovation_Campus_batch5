@@ -541,11 +541,12 @@ if __name__ == "__main__":
                 st.write("Ini adalah halaman Home.")
                 if st.button("Lanjutkan ke Page 2"):
                     st.session_state.page = "Page 2"
-                    ml()
+                    
             
             # Definisi halaman Page 2
             elif st.session_state.page == "Page 2":
                 st.title("Page 2")
+                ml()
                 st.write("Ini adalah halaman kedua.")
                 if st.button("Kembali ke Home"):
                     st.session_state.page = "Home"
