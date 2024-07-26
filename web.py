@@ -12,7 +12,7 @@ from io import StringIO
 from imblearn.over_sampling import SMOTE
 
 
-st.set_page_config(page_title='Smart Hidroponik', layout='wide',initial_sidebar_state="collapsed", page_icon="🌿"
+st.set_page_config(page_title='Smart Hidroponik', layout='wide',initial_sidebar_state="collapsed", page_icon="🌿",
     menu_items={
         'Get Help': 'https://www.extremelycoolapp.com/help',
         'Report a bug': "https://www.extremelycoolapp.com/bug",
