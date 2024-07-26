@@ -12,7 +12,7 @@ from io import StringIO
 from imblearn.over_sampling import SMOTE
 
 
-st.set_page_config(page_title='Smart Hidroponik', layout='wide', page_icon="🌿")
+st.set_page_config(page_title='Smart Hidroponik', layout='wide',initial_sidebar_state="expanded", page_icon="🌿")
 # Fungsi untuk mengambil nilai sensor terbaru dari MongoDB
 def get_latest_sensor_data():
     client = MongoClient('mongodb+srv://SmartHidroponik:MERA_X@smarthidroponik.hdetbis.mongodb.net/?retryWrites=true&w=majority&appName=SmartHidroponik')
