@@ -531,10 +531,11 @@ def ml():
 
 if 'page' not in st.session_state:
     st.session_state.page = "Home"
-
+    
 # Menampilkan konten berdasarkan halaman yang dipilih
 if st.session_state.page == "Home":
     st.title("Home")
+    streamlit_app()
     st.write("Ini adalah halaman Home.")
     if st.button("Lanjutkan ke Page 2"):
         st.session_state.page = "Page 2"
