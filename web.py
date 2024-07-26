@@ -530,7 +530,7 @@ def ml():
       st.line_chart(data_rapi.set_index('waktu')['tds'])
 
 if __name__ == "__main__":
-    streamlit_app()
+
     st.sidebar.title("Navigasi")
     menu = st.sidebar.radio("Pilih Menu", ["Dashboard", "Machine Learning"])
     if menu == "Dashboard":
