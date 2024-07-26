@@ -1,4 +1,4 @@
-import streamlit as s
+import streamlit as st
 
 # Menentukan halaman yang aktif
 if 'page' not in st.session_state:
