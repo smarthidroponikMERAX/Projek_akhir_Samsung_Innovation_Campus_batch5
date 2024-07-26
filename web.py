@@ -458,7 +458,7 @@ def ml():
 
     # Evaluation
     accuracy_LR_ph = accuracy_score(dependen_test_ph, hasil_prediksi_LR_ph)
-    precision_LR_ph = precision_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
+    
     recall_LR_ph = recall_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
     f1_LR_ph = f1_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
 
