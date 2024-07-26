@@ -530,4 +530,5 @@ body {
       st.line_chart(data_rapi.set_index('waktu')['tds'])
 
 if __name__ == "__main__":
-        streamlit_app()  
+        streamlit_app()
+        ml()
