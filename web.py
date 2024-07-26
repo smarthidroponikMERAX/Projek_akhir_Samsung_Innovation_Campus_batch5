@@ -532,8 +532,9 @@ def ml():
 if __name__ == "__main__":
 
     st.sidebar.title("Navigasi")
-    menu = st.sidebar.radio("Pilih Menu", ["Dashboard", "Machine Learning"])
-    if menu == "Dashboard":
+    st.sidebar.title("Navigasi")
+    if st.sidebar.button("Dashboard"):
         streamlit_app()
-    elif menu == "Machine Learning":
+    elif st.sidebar.button("Machine Learning"):
         ml()
+
