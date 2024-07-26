@@ -353,182 +353,166 @@ body {
     st.markdown(desain_css, unsafe_allow_html=True)
     st.markdown(html_content, unsafe_allow_html=True)
 
+
 def ml():
-      client = MongoClient('mongodb+srv://SmartHidroponik:MERA_X@smarthidroponik.hdetbis.mongodb.net/?retryWrites=true&w=majority&appName=SmartHidroponik')
-      db = client['Smart_Hidroponik']
-      collection = db['Sensor']
-      #Machine Learning
-      data = list(collection.find())
-      data_rapi = pd.DataFrame(data)
+    # Connect to MongoDB
+    client = MongoClient('mongodb+srv://SmartHidroponik:MERA_X@smarthidroponik.hdetbis.mongodb.net/?retryWrites=true&w=majority&appName=SmartHidroponik')
+    db = client['Smart_Hidroponik']
+    collection = db['Sensor']
 
-      st.title("Smart Hidroponik - Prediksi Kesehatan Tanaman")
+    # Load data from MongoDB
+    data = list(collection.find())
+    data_rapi = pd.DataFrame(data)
 
-      # Menampilkan Data
-      st.subheader("Data Sensor")
-      st.write(data_rapi)
+    st.title("Smart Hidroponik - Prediksi Kesehatan Tanaman")
 
-      # Memisahkan data
-      independen_ph = data_rapi[['suhu', 'tds']]
-      dependen_ph = data_rapi[['pH']]
-      independen_nutrisi = data_rapi[['suhu', 'pH']]
-      dependen_nutrisi = data_rapi[['tds']]
+    # Display the data
+    st.subheader("Data Sensor")
+    st.write(data_rapi)
 
-      # Pengecekan data
-      st.subheader("Pengecekan Data")
-      st.write("Deskripsi Data:")
-      st.write(data_rapi.describe())
+    # Clean the data
+    st.subheader("Pengecekan Data")
+    st.write("Deskripsi Data:")
+    st.write(data_rapi.describe())
 
-      if data_rapi.isnull().sum().sum() == 0:
-          st.write("- Tidak Ada Data Kosong")
-      else:
-          st.write("- Ada Data Kosong")
-          st.write(data_rapi[data_rapi.isnull().any(axis=1)])
+    if data_rapi.isnull().sum().sum() == 0:
+        st.write("- Tidak Ada Data Kosong")
+    else:
+        st.write("- Ada Data Kosong")
+        st.write(data_rapi[data_rapi.isnull().any(axis=1)])
 
-      if data_rapi.duplicated().sum() == 0:
-          st.write("- Tidak Ada Penduplikatan data")
-      else:
-          st.write("- Ada Penduplikatan data")
-          st.write(data_rapi[data_rapi.duplicated()])
+    if data_rapi.duplicated().sum() == 0:
+        st.write("- Tidak Ada Penduplikatan data")
+    else:
+        st.write("- Ada Penduplikatan data")
+        st.write(data_rapi[data_rapi.duplicated()])
 
-      # Menghapus kolom yang tidak diperlukan
-      data_rapi = data_rapi.drop(columns=['_id', 'waktu'])
+    # Drop unnecessary columns
+    data_rapi = data_rapi.drop(columns=['_id', 'waktu'])
 
-      # Korelasi Data
-      st.subheader("Korelasi Data")
-      korelasi_data = data_rapi.corr()
-      fig, ax = plt.subplots()
-      sns.heatmap(korelasi_data, annot=True, cmap='coolwarm', linewidths=0.5, ax=ax)
-      plt.title('Heatmap Korelasi')
-      st.pyplot(fig)
+    # Data Correlation
+    st.subheader("Korelasi Data")
+    korelasi_data = data_rapi.corr()
+    fig, ax = plt.subplots()
+    sns.heatmap(korelasi_data, annot=True, cmap='coolwarm', linewidths=0.5, ax=ax)
+    plt.title('Heatmap Korelasi')
+    st.pyplot(fig)
 
-      # Pembagian data untuk model
-      data = list(collection.find())
-      for d in data:
-          d['_id'] = str(d['_id'])
-      data_rapi = pd.DataFrame(data)
+    # Categorize target variables
+    def categorize_ph(value):
+        if value < 5:
+            return 'Rendah'
+        elif 5 <= value <= 7:
+            return 'Sedang'
+        else:
+            return 'Tinggi'
 
-      # Kategorisasi target
-      def categorize_ph(value):
-          if value < 5:
-              return 'Rendah'
-          elif 5 <= value <= 7:
-              return 'Sedang'
-          else:
-              return 'Tinggi'
+    def categorize_tds(value):
+        if value < 1050:
+            return 'Rendah'
+        elif 1050 <= value <= 1400:
+            return 'Sedang'
+        else:
+            return 'Tinggi'
 
-      def categorize_tds(value):
-          if value < 1050:
-              return 'Rendah'
-          elif 1050 <= value <= 1400:
-              return 'Sedang'
-          else:
-              return 'Tinggi'
+    data_rapi['pH kategori'] = data_rapi['pH'].apply(categorize_ph)
+    data_rapi['TDS kategori'] = data_rapi['tds'].apply(categorize_tds)
 
-      data_rapi['pH kategori'] = data_rapi['pH'].apply(categorize_ph)
-      data_rapi['TDS kategori'] = data_rapi['tds'].apply(categorize_tds)
+    # Encode categorical data
+    label_encoder = LabelEncoder()
+    data_rapi['TDS kategori'] = label_encoder.fit_transform(data_rapi['TDS kategori'])
+    data_rapi['pH kategori'] = label_encoder.fit_transform(data_rapi['pH kategori'])
 
-      """Mengubah data yang ada menjadi numerik"""
-      print("- ", data_rapi['TDS kategori'].value_counts(), ":")
-      print("- ", data_rapi['pH kategori'].value_counts(), ":")
+    # Prepare data for modeling
+    independen_ph = data_rapi[['suhu', 'tds']]
+    dependen_ph = data_rapi['pH kategori']
+    independen_nutrisi = data_rapi[['suhu', 'pH']]
+    dependen_nutrisi = data_rapi['TDS kategori']
 
-      #Karena melihat data kolom type memiliki data [L,M,H,], maka saya harus membuat data tersebut angka
-      pengubah_categorical = LabelEncoder() #memanggil library encoding 
-      data_rapi['TDS kategori'] = pengubah_categorical.fit_transform(data_rapi['TDS kategori']) #mengubah data kolom type menjadi angka
-      data_rapi['pH kategori'] = pengubah_categorical.fit_transform(data_rapi['pH kategori']) 
+    # Split data
+    independen_train_ph, independen_test_ph, dependen_train_ph, dependen_test_ph = train_test_split(independen_ph, dependen_ph, test_size=0.25, stratify=dependen_ph)
+    independen_train_nutrisi, independen_test_nutrisi, dependen_train_nutrisi, dependen_test_nutrisi = train_test_split(independen_nutrisi, dependen_nutrisi, test_size=0.25, stratify=dependen_nutrisi)
 
-      # Memisahkan data
-      independen_ph = data_rapi[['suhu', 'tds']]
-      dependen_ph = data_rapi['pH kategori']
-      independen_nutrisi = data_rapi[['suhu', 'pH']]
-      dependen_nutrisi = data_rapi['TDS kategori']
+    # Apply SMOTE to handle class imbalance
+    smote = SMOTE()
+    independen_train_ph, dependen_train_ph = smote.fit_resample(independen_train_ph, dependen_train_ph)
+    independen_train_nutrisi, dependen_train_nutrisi = smote.fit_resample(independen_train_nutrisi, dependen_train_nutrisi)
 
-      # Pembagian data untuk model
-      independen_train_ph, independen_test_ph, dependen_train_ph, dependen_test_ph = train_test_split(independen_ph, dependen_ph, test_size=0.25, stratify=dependen_ph)
-      independen_train_nutrisi, independen_test_nutrisi, dependen_train_nutrisi, dependen_test_nutrisi = train_test_split(independen_nutrisi, dependen_nutrisi, test_size=0.25, stratify=dependen_nutrisi)
+    # Modeling pH
+    model_LR_ph = LogisticRegression(class_weight='balanced')
+    model_LR_ph.fit(independen_train_ph, dependen_train_ph)
+    hasil_prediksi_LR_ph = model_LR_ph.predict(independen_test_ph)
 
-      # Menggunakan SMOTE untuk mengatasi ketidakseimbangan kelas pada data pelatihan
-      smote = SMOTE()
-      independen_train_ph, dependen_train_ph = smote.fit_resample(independen_train_ph, dependen_train_ph)
-      independen_train_nutrisi, dependen_train_nutrisi = smote.fit_resample(independen_train_nutrisi, dependen_train_nutrisi)
+    model_RF_ph = RandomForestClassifier(class_weight='balanced')
+    model_RF_ph.fit(independen_train_ph, dependen_train_ph)
+    hasil_prediksi_RF_ph = model_RF_ph.predict(independen_test_ph)
 
-      # Pastikan target dalam bentuk 1D array
-      dependen_train_ph = dependen_train_ph.to_numpy()
-      dependen_test_ph = dependen_test_ph.to_numpy()
-      dependen_train_nutrisi = dependen_train_nutrisi.to_numpy()
-      dependen_test_nutrisi = dependen_test_nutrisi.to_numpy()
+    # Modeling Nutrisi
+    model_LR_nutrisi = LogisticRegression(class_weight='balanced')
+    model_LR_nutrisi.fit(independen_train_nutrisi, dependen_train_nutrisi)
+    hasil_prediksi_LR_nutrisi = model_LR_nutrisi.predict(independen_test_nutrisi)
 
-      # Cek distribusi kelas setelah menggunakan SMOTE
-      print("Distribusi kelas untuk pH kategori setelah SMOTE:")
-      print(pd.Series(dependen_train_ph).value_counts())
-      print("Distribusi kelas untuk TDS kategori setelah SMOTE:")
-      print(pd.Series(dependen_train_nutrisi).value_counts())
+    model_RF_nutrisi = RandomForestClassifier(class_weight='balanced')
+    model_RF_nutrisi.fit(independen_train_nutrisi, dependen_train_nutrisi)
+    hasil_prediksi_RF_nutrisi = model_RF_nutrisi.predict(independen_test_nutrisi)
 
-      # Modeling pH
-      model_LR_ph = LogisticRegression(class_weight='balanced')
-      model_LR_ph.fit(independen_train_ph, dependen_train_ph)
-      hasil_prediksi_LR_ph = model_LR_ph.predict(independen_test_ph)
+    # Evaluation
+    accuracy_LR_ph = accuracy_score(dependen_test_ph, hasil_prediksi_LR_ph)
+    precision_LR_ph = precision_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
+    recall_LR_ph = recall_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
+    f1_LR_ph = f1_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
 
-      model_RF_ph = RandomForestClassifier(class_weight='balanced')
-      model_RF_ph.fit(independen_train_ph, dependen_train_ph)
-      hasil_prediksi_RF_ph = model_RF_ph.predict(independen_test_ph)
+    accuracy_RF_ph = accuracy_score(dependen_test_ph, hasil_prediksi_RF_ph)
+    precision_RF_ph = precision_score(dependen_test_ph, hasil_prediksi_RF_ph, average='macro')
+    recall_RF_ph = recall_score(dependen_test_ph, hasil_prediksi_RF_ph, average='macro')
+    f1_RF_ph = f1_score(dependen_test_ph, hasil_prediksi_RF_ph, average='macro')
 
-      # Modeling Nutrisi
-      model_LR_nutrisi = LogisticRegression(class_weight='balanced')
-      model_LR_nutrisi.fit(independen_train_nutrisi, dependen_train_nutrisi)
-      hasil_prediksi_LR_nutrisi = model_LR_nutrisi.predict(independen_test_nutrisi)
+    accuracy_LR_nutrisi = accuracy_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi)
+    precision_LR_nutrisi = precision_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi, average='macro')
+    recall_LR_nutrisi = recall_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi, average='macro')
+    f1_LR_nutrisi = f1_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi, average='macro')
 
-      model_RF_nutrisi = RandomForestClassifier(class_weight='balanced')
-      model_RF_nutrisi.fit(independen_train_nutrisi, dependen_train_nutrisi)
-      hasil_prediksi_RF_nutrisi = model_RF_nutrisi.predict(independen_test_nutrisi)
+    accuracy_RF_nutrisi = accuracy_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi)
+    precision_RF_nutrisi = precision_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi, average='macro')
+    recall_RF_nutrisi = recall_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi, average='macro')
+    f1_RF_nutrisi = f1_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi, average='macro')
 
-      # Evaluasi
-      accuracy_LR_ph = accuracy_score(dependen_test_ph, hasil_prediksi_LR_ph)
-      recall_LR_ph = recall_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
-      f1_LR_ph = f1_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
+    # Display metrics
+    st.write("Logistik Regression pH")
+    st.write(f"Accuracy Logistic Regression: {accuracy_LR_ph}")
+    st.write(f"Precision Logistic Regression: {precision_LR_ph}")
+    st.write(f"Recall Logistic Regression: {recall_LR_ph}")
+    st.write(f"F1-score Logistic Regression: {f1_LR_ph}")
 
-      accuracy_RF_ph = accuracy_score(dependen_test_ph, hasil_prediksi_RF_ph)
-      recall_RF_ph = recall_score(dependen_test_ph, hasil_prediksi_RF_ph, average='macro')
-      f1_RF_ph = f1_score(dependen_test_ph, hasil_prediksi_RF_ph, average='macro')
+    st.write("Random Forest pH")
+    st.write(f"Accuracy Random Forest: {accuracy_RF_ph}")
+    st.write(f"Precision Random Forest: {precision_RF_ph}")
+    st.write(f"Recall Random Forest: {recall_RF_ph}")
+    st.write(f"F1-score Random Forest: {f1_RF_ph}")
 
-      accuracy_LR_nutrisi = accuracy_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi)
-      recall_LR_nutrisi = recall_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi, average='macro')
-      f1_LR_nutrisi = f1_score(dependen_test_nutrisi, hasil_prediksi_LR_nutrisi, average='macro')
+    st.write("Logistik Regression Nutrisi")
+    st.write(f"Accuracy Logistic Regression: {accuracy_LR_nutrisi}")
+    st.write(f"Precision Logistic Regression: {precision_LR_nutrisi}")
+    st.write(f"Recall Logistic Regression: {recall_LR_nutrisi}")
+    st.write(f"F1-score Logistic Regression: {f1_LR_nutrisi}")
 
-      accuracy_RF_nutrisi = accuracy_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi)
-      recall_RF_nutrisi = recall_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi, average='macro')
-      f1_RF_nutrisi = f1_score(dependen_test_nutrisi, hasil_prediksi_RF_nutrisi, average='macro')
+    st.write("Random Forest Nutrisi")
+    st.write(f"Accuracy Random Forest: {accuracy_RF_nutrisi}")
+    st.write(f"Precision Random Forest: {precision_RF_nutrisi}")
+    st.write(f"Recall Random Forest: {recall_RF_nutrisi}")
+    st.write(f"F1-score Random Forest: {f1_RF_nutrisi}")
 
-      st.write("Logistik Regression pH")
-      st.write(f"Accuracy Logistic Regression: {accuracy_LR_ph}")
-      st.write(f"Recall Logistic Regression: {recall_LR_ph}")
-      st.write(f"F1-score Logistic Regression: {f1_LR_ph}")
+    # Plot sensor data
+    st.subheader("Grafik Sensor")
+    st.write("pH Sensor:")
+    st.line_chart(data_rapi.set_index('waktu')['pH'])
 
-      st.write("Random Forest pH")
-      st.write(f"Accuracy Random Forest: {accuracy_RF_ph}")
-      st.write(f"Recall Random Forest: {recall_RF_ph}")
-      st.write(f"F1-score Random Forest: {f1_RF_ph}")
+    st.write("Suhu Air:")
+    st.line_chart(data_rapi.set_index('waktu')['suhu'])
 
-      st.write("Logistik Regression Nutrisi")
-      st.write(f"Accuracy Logistic Regression: {accuracy_LR_nutrisi}")
-      st.write(f"Recall Logistic Regression: {recall_LR_nutrisi}")
-      st.write(f"F1-score Logistic Regression: {f1_LR_nutrisi}")
-
-      st.write("Random Forest Nutrisi")
-      st.write(f"Accuracy Random Forest: {accuracy_RF_nutrisi}")
-      st.write(f"Recall Random Forest: {recall_RF_nutrisi}")
-      st.write(f"F1-score Random Forest: {f1_RF_nutrisi}")
-
-      st.subheader("Grafik Sensor")
+    st.write("Nutrisi (TDS):")
+    st.line_chart(data_rapi.set_index('waktu')['tds'])
     
-      st.write("pH Sensor:")
-      st.line_chart(data_rapi.set_index('waktu')['pH'])
-
-      st.write("Suhu Air:")
-      st.line_chart(data_rapi.set_index('waktu')['suhu'])
-
-      st.write("Nutrisi (TDS):")
-      st.line_chart(data_rapi.set_index('waktu')['tds'])
-
 if 'page' not in st.session_state:
     st.session_state.page = "Home"
     
