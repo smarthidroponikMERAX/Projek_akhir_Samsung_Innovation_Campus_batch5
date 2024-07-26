@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, recall_score, f1_score, precision_score
 import streamlit as st
 from io import StringIO
 from imblearn.over_sampling import SMOTE
@@ -458,7 +458,7 @@ def ml():
 
     # Evaluation
     accuracy_LR_ph = accuracy_score(dependen_test_ph, hasil_prediksi_LR_ph)
-    
+    precision_LR_ph = precision_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
     recall_LR_ph = recall_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
     f1_LR_ph = f1_score(dependen_test_ph, hasil_prediksi_LR_ph, average='macro')
 
