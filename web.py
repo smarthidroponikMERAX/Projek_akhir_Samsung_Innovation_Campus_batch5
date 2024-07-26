@@ -529,12 +529,20 @@ def ml():
       st.write("Nutrisi (TDS):")
       st.line_chart(data_rapi.set_index('waktu')['tds'])
 
-if __name__ == "__main__":
+if 'page' not in st.session_state:
+    st.session_state.page = "Home"
 
-    st.sidebar.title("Navigasi")
-    st.sidebar.title("Navigasi")
-    if st.sidebar.button("Dashboard"):
-        streamlit_app()
-    elif st.sidebar.button("Machine Learning"):
-        ml()
+# Menampilkan konten berdasarkan halaman yang dipilih
+if st.session_state.page == "Home":
+    st.title("Home")
+    st.write("Ini adalah halaman Home.")
+    if st.button("Lanjutkan ke Page 2"):
+        st.session_state.page = "Page 2"
+
+elif st.session_state.page == "Page 2":
+    st.title("Page 2")
+    ml()  # Panggil fungsi ml() di sini
+    st.write("Ini adalah halaman kedua.")
+    if st.button("Kembali ke Home"):
+        st.session_state.page
 
